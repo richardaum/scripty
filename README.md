@@ -10,7 +10,7 @@ way of maintaining the various build tasks needed to develop Node.js modules.
 People like npm-scripts because it's simple! This is a common refrain:
 
 > Don't bother with grunt, gulp, or broccoli, just add a little script to your
-package.json and run it with `npm run name:of:script`
+> package.json and run it with `npm run name:of:script`
 
 Indeed, this _is_ much simpler, but it can quickly become a mess. Take a look at
 what happened to our
@@ -27,20 +27,20 @@ them. To see how to do this yourself, read on!
 ## Install
 
 ```
-$ npm install --save-dev scripty
+$ npm install --save-dev @richardaum/scripty
 ```
 
 ## Usage
 
 1. From your module's root, create a `scripts` directory
 2. If you want to define an npm script named "foo:bar", write an executable
-file at `scripts/foo/bar`
+   file at `scripts/foo/bar`
 3. Feel a liberating breeze roll over your knuckles as
-your script is free to roam within its own file, beyond the stuffy confines of a
-quote-escaped string inside a pile of JSON
+   your script is free to roam within its own file, beyond the stuffy confines of a
+   quote-escaped string inside a pile of JSON
 4. Declare your `"foo:bar"` script in `"scripts"` in your `package.json`:
 
-``` json
+```json
 "scripts": {
   "foo:bar": "scripty"
 }
@@ -68,7 +68,7 @@ forwarding them along).
 
 For example, if you had a script in `scripts/echo/hello`:
 
-``` sh
+```sh
 #!/usr/bin/env sh
 
 echo Hello, "$1"!
@@ -82,7 +82,7 @@ Then you can run `npm run echo:hello -- WORLD` and see your script print
 Let's say you have two test tasks in `scripts/test/unit` and
 `scripts/test/integration`:
 
-``` json
+```json
 "scripts": {
   "test:unit": "scripty",
   "test:integration": "scripty"
@@ -92,7 +92,7 @@ Let's say you have two test tasks in `scripts/test/unit` and
 And you want `npm test` to simply run all of them, regardless of order. In that
 case, just add a `"test"` entry to your `package.json` like so:
 
-``` json
+```json
 "scripts": {
   "test:unit": "scripty",
   "test:integration": "scripty",
@@ -111,7 +111,7 @@ custom scripting as well. Fear, not!
 
 Without changing the JSON from the previous example:
 
-``` json
+```json
 "scripts": {
   "test:unit": "scripty",
   "test:integration": "scripty",
@@ -141,7 +141,7 @@ $ SCRIPTY_PARALLEL=true npm run watch
 Or, if that particular script should always be run in parallel, you can set the
 variable in your package.json:
 
-``` json
+```json
 "scripts": {
   "watch": "SCRIPTY_PARALLEL=true scripty"
 }
@@ -165,17 +165,17 @@ set in your package.json under a `"scripty"` entry:
 Windows support is provided by scripty in two ways:
 
 1. If everything in your `scripts` directory can be safely executed by Windows,
-no action is needed (this is only likely if you don't have collaborators on
-Unix-like platforms)
+   no action is needed (this is only likely if you don't have collaborators on
+   Unix-like platforms)
 2. If your project needs to run scripts in both Windows & Unix, then you may
-define a `scripts-win/` directory with a symmetrical set of scripts to whatever
-Unix  scripts might be found in `scripts/`
+   define a `scripts-win/` directory with a symmetrical set of scripts to whatever
+   Unix scripts might be found in `scripts/`
 
 To illustrate the above, suppose you have this bash script configured as
-``"test/unit"`` in your package.json file and this bash script defined in
+`"test/unit"` in your package.json file and this bash script defined in
 `scripts/test/unit`:
 
-``` bash
+```bash
 #!/usr/bin/env bash
 
 teenytest --helper test/unit-helper.js "lib/**/*.test.js"
@@ -184,7 +184,7 @@ teenytest --helper test/unit-helper.js "lib/**/*.test.js"
 In order to add Windows support, you could define `scripts-win/test/unit.cmd`
 with this script:
 
-``` bat
+```bat
 @ECHO OFF
 
 teenytest --helper test\unit-helper.js "lib\**\*.test.js"
@@ -202,7 +202,7 @@ module root (and if you're running windows, it'll check `scripts-win/` first).
 If you'd like to customize the base directories scripty uses to search for your
 scripts, add a `"scripty"` object property to your package.json like so:
 
-``` json
+```json
 "config": {
   "scripty": {
     "path": "../core/scripts",
@@ -222,7 +222,7 @@ search space. This is beneficial if you would like to create a centralized place
 for your scripts and then share them across multiple projects. To include modules
 add a `"scripty"` object property, `modules`, to your package.json like so:
 
-``` json
+```json
 "config": {
   "scripty": {
     "modules": ["packageA", "packageB"]
@@ -313,17 +313,18 @@ If no setting is provided, scripty will infer its log level from npm's log level
 
 ## Likely questions
 
-* **Is this pure magic?** - Nope! For once, instilling some convention didn't
-require any clever metaprogramming, just environment variables npm already sets;
-try running `printenv` from a script some time!
-* **Why isn't my script executing?** - If your script isn't executing, make sure
-it's **executable**! In UNIX, this can be accomplished by running
-`chmod +x scripts/path/to/my/script` (permissions will also be stored in git)
-* **How can I expect my users to understand what this does?** Documenting your
-project's use of `scripty` in the `README` is probably a good idea. Here's
-some copy pasta if you don't feel like writing it up yourself:
+- **Is this pure magic?** - Nope! For once, instilling some convention didn't
+  require any clever metaprogramming, just environment variables npm already sets;
+  try running `printenv` from a script some time!
+- **Why isn't my script executing?** - If your script isn't executing, make sure
+  it's **executable**! In UNIX, this can be accomplished by running
+  `chmod +x scripts/path/to/my/script` (permissions will also be stored in git)
+- **How can I expect my users to understand what this does?** Documenting your
+  project's use of `scripty` in the `README` is probably a good idea. Here's
+  some copy pasta if you don't feel like writing it up yourself:
 
   > ## npm scripts
+  >
   > MyProject uses [`scripty`](https://github.com/testdouble/scripty) to organize
   > npm scripts. The scripts are defined in the [`scripts`](/scripts) directory.
   > In `package.json` you'll see the word `scripty` as opposed to the script
